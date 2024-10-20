@@ -45,6 +45,7 @@ dependencies {
 
     //Propia
     implementation(libs.gson.serializable)
+    implementation(libs.viewModelScope)
 
 
 
