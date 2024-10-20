@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">AMV_Movies_app</string>
+    <string name="local_movies_xml">Movies</string>
 </resources>
