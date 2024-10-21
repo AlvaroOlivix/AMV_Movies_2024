@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.navigation.safeargs.kotlin)
 }
 
 android {
@@ -33,6 +34,9 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
@@ -46,7 +50,10 @@ dependencies {
     //Propia
     implementation(libs.gson.serializable)
     implementation(libs.viewModelScope)
-
+    implementation(libs.navigation.ui)
+    implementation(libs.navigation.fragment)
+    implementation(libs.navigation.fragment.ktx)
+    implementation(libs.glide)
 
 
     //Test

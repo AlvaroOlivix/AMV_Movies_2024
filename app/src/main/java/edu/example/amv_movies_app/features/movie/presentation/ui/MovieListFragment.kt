@@ -1,17 +1,14 @@
 package edu.example.amv_movies_app.features.movie.presentation.ui
 
-import android.content.Context
 import android.os.Bundle
-import android.renderscript.ScriptGroup.Binding
-import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import edu.example.amv_movies_app.features.movie.domain.Movie
+import androidx.navigation.fragment.findNavController
+import edu.example.amv_movies_app.databinding.FragmentMovieListBinding
 import edu.example.amv_movies_app.features.movie.presentation.MovieFactory
 import edu.example.amv_movies_app.features.movie.presentation.viewModel.MovieListViewModel
 
@@ -20,12 +17,17 @@ class MovieListFragment : Fragment() {
     private lateinit var movieFactory: MovieFactory
     private lateinit var viewModel: MovieListViewModel
 
+    private var _binding: FragmentMovieListBinding? = null
+    val binding get() = _binding!!
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return super.onCreateView(inflater, container, savedInstanceState)
+        _binding = FragmentMovieListBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -33,8 +35,8 @@ class MovieListFragment : Fragment() {
 
         movieFactory = MovieFactory(requireContext())
         viewModel = movieFactory.buildMovieListViewModel()
-        viewModel.loadMovieList()
         setUpObserver()
+        viewModel.loadMovieList()
 
     }
 
@@ -61,6 +63,14 @@ class MovieListFragment : Fragment() {
     }
 
     private fun bindData() {
+        //Continuación del Recycler, con Adapter
+    }
 
+    private fun navigateToDetail(id: String) {
+        findNavController().navigate(
+            MovieListFragmentDirections.fragmentMovieListToFragmentMovieDetail(
+                id
+            )
+        )
     }
 }
