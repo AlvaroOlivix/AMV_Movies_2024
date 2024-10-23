@@ -20,7 +20,7 @@ class MovieDetailFragment : Fragment() {
     private lateinit var viewModel: MovieDetailViewModel
 
     private var _binding: FragmentMovieDetailBinding? = null
-    val binding get() = _binding!!
+    private val binding get() = _binding!!
 
     private val movieArgs: MovieDetailFragmentArgs by navArgs()
 
@@ -30,7 +30,6 @@ class MovieDetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
        _binding = FragmentMovieDetailBinding.inflate(inflater, container, false)
-
         return binding.root
     }
 
@@ -39,19 +38,16 @@ class MovieDetailFragment : Fragment() {
 
         movieFactory = MovieFactory(requireContext())
         viewModel = movieFactory.buildMovieDetailViewModel()
-
+        setUpObserver()
         getMovieId()?.let {
             viewModel.loadMovieDetail(it)
         }
-        setUpObserver()
-
-
     }
 
     private fun setUpObserver() {
         val movieDetailObserver = Observer<MovieDetailViewModel.UiState> { uistate ->
             uistate.movie?.let {
-                //bindData(it)
+                bindData(it)
             }
             uistate.error?.let {
                 //MuestroError(it)
@@ -76,7 +72,6 @@ class MovieDetailFragment : Fragment() {
             nameMovie.text = movie.title
             desc.text = movie.desc
             posterMovie.loadUrl(movie.poster)
-
         }
     }
     private fun getMovieId(): String? {

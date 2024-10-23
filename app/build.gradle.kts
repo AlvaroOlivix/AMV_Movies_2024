@@ -48,16 +48,30 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
 
     //Propia
-    implementation(libs.gson.serializable)
-    implementation(libs.viewModelScope)
-    implementation(libs.navigation.ui)
-    implementation(libs.navigation.fragment)
-    implementation(libs.navigation.fragment.ktx)
+    implementation(libs.gson.serializer)
+    /**
+    Implementar librería que permite serializar y deserizalizar objetos a la hora de
+    guardarlos recuperarlos en un archivo local (.xml, .txt)
+     */
+
+    // Librerías para interactuar con la API superhero.xml y enviar solicitudes de red
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter)
     implementation(libs.glide)
+    implementation(libs.viewmodel.scope)
+
+    implementation(libs.nav.fragment.ktx)
+    implementation(libs.nav.ui)
 
 
-    //Test
+
+    //Librerias para testing
     testImplementation(libs.junit)
+    testImplementation(libs.mockito.framework)
+    testImplementation(libs.mockito.junit)
+
+    //Librerías para Android-Testing
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
 }

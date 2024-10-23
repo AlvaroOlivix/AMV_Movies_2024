@@ -8,8 +8,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import edu.example.amv_movies_app.databinding.FragmentMovieListBinding
+import edu.example.amv_movies_app.features.movie.domain.Movie
 import edu.example.amv_movies_app.features.movie.presentation.MovieFactory
+import edu.example.amv_movies_app.features.movie.presentation.adapter.MovieAdapter
 import edu.example.amv_movies_app.features.movie.presentation.viewModel.MovieListViewModel
 
 class MovieListFragment : Fragment() {
@@ -18,8 +21,9 @@ class MovieListFragment : Fragment() {
     private lateinit var viewModel: MovieListViewModel
 
     private var _binding: FragmentMovieListBinding? = null
-    val binding get() = _binding!!
+    private val binding get() = _binding!!
 
+    private val movieAdapter = MovieAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -27,6 +31,7 @@ class MovieListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentMovieListBinding.inflate(inflater, container, false)
+        setUpView()
         return binding.root
     }
 
@@ -44,7 +49,7 @@ class MovieListFragment : Fragment() {
     private fun setUpObserver() {
         val movieListObserver = Observer<MovieListViewModel.UiState> { uistate ->
             uistate.movies?.let {
-                //bindData(it)
+                bindData(it)
             }
             uistate.error?.let {
                 //MuestroError(it)
@@ -62,15 +67,34 @@ class MovieListFragment : Fragment() {
         viewModel.uiState.observe(viewLifecycleOwner, movieListObserver)
     }
 
-    private fun bindData() {
-        //Continuación del Recycler, con Adapter
+    private fun setUpView() {
+        binding.apply {
+            listMovies.layoutManager =
+                LinearLayoutManager(
+                    context,
+                    LinearLayoutManager.VERTICAL,
+                    false
+                )
+            movieAdapter.setOnclickListener { id ->
+                navigateToDetail(id)
+            }
+            listMovies.adapter = movieAdapter
+        }
+    }
+
+    private fun bindData(movieList: List<Movie>) {
+        movieAdapter.submitList(movieList)
     }
 
     private fun navigateToDetail(id: String) {
         findNavController().navigate(
-            MovieListFragmentDirections.fragmentMovieListToFragmentMovieDetail(
-                id
-            )
+            MovieListFragmentDirections.actionFromMovieListToMovieDetail(id)
+
         )
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
